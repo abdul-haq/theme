@@ -80,7 +80,11 @@
                                 <li class="nav-item">
                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
                                             <img src="" alt="" />
-                                            <span class="admin-name">Haider</span>
+                                            <span class="admin-name"><?php
+                                            $fn=$_SESSION['first_name'];
+                                            $ln=$_SESSION['last_name']; 
+                                            echo $fn." ".$ln 
+                                              ?></span>
                                             <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                         </a>
                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
@@ -92,7 +96,7 @@
                                         </li>
                                         <li><a href="#"><span class="edu-icon edu-settings author-log-ic"></span>Settings</a>
                                         </li>
-                                        <li><a href="#"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
+                                        <li><a href="login.php?logout=true"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
                                         </li>
                                     </ul>
                                 </li>

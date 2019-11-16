@@ -1,3 +1,54 @@
+<?php 
+session_start();
+
+require_once('inc/config.php');
+
+if(isset($_POST['login']))
+{
+	if(!empty($_POST['email']) && !empty($_POST['password']))
+	{
+		$email 		= trim($_POST['email']);
+		$password 	= trim($_POST['password']);
+		
+		$md5Password = md5($password);
+		
+		$sql = "select * from tbl_users where email = '".$email."' and password = '".$md5Password."'";
+		$rs = mysqli_query($conn,$sql);
+		$getNumRows = mysqli_num_rows($rs);
+		
+		if($getNumRows == 1)
+		{
+			$getUserRow = mysqli_fetch_assoc($rs);
+			unset($getUserRow['password']);
+			
+			$_SESSION = $getUserRow;
+						
+			header('location:index.php');
+			exit;
+		}
+		else
+		{
+			$errorMsg = "Wrong email or password";
+		}
+	}
+}
+
+if(isset($_GET['logout']) && $_GET['logout'] == true)
+{
+	session_destroy();
+	header("location:login.php");
+	exit;
+}
+
+
+if(isset($_GET['lmsg']) && $_GET['lmsg'] == true)
+{
+	$errorMsg = "Login required to access dashboard";
+}
+
+
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -73,17 +124,26 @@
 			<div class="content-error">
 				<div class="hpanel">
                     <div class="panel-body">
-                        <form action="#" id="loginForm">
+                    <?php 
+			if(isset($errorMsg))
+			{
+				echo '<div class="alert alert-danger">';
+				echo $errorMsg;
+				echo '</div>';
+				unset($errorMsg);
+			}
+		?>
+                        <form action="<?php echo $_SERVER['PHP_SELF']?>" id="loginForm" method="post">
                             <div class="form-group">
                                 <label class="control-label" for="username">Username</label>
-                                <input type="text" placeholder="example@gmail.com" title="Please enter you username" required="" value="" name="username" id="username" class="form-control">
+                                <input type="text" placeholder="example@gmail.com" title="Please enter you username" required="" value="" name="email" id="username" class="form-control">
                              </div>
                             <div class="form-group">
                                 <label class="control-label" for="password">Password</label>
                                 <input type="password" title="Please enter your password" placeholder="******" required="" value="" name="password" id="password" class="form-control">
                                  </div>
                             
-                            <button class="btn btn-success btn-block loginbtn">Login</button>
+                            <button class="btn btn-success btn-block loginbtn" type="submit" name="login">Login</button>
                              </form>
                     </div>
                 </div>

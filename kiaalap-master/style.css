@@ -4602,6 +4602,11 @@ div#sparklinehome canvas {
 .error-pagewrap {
     min-height: 100vh;
     text-align: center;
+    background-image: url("img/1.jpg");
+height: 100%;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
 }
 .error-pagewrap:before {
     content: '';
